@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=3 uid="uid://b2cuanefkygyx"]
+
+[ext_resource type="PackedScene" uid="uid://brfbvq4a0o8t4" path="res://Inventory/Inventory.tscn" id="1_axi3y"]
+
+[node name="Testing" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 192.0
+offset_bottom = 174.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Inventory"
+
+[node name="Inventory" parent="Panel/VBoxContainer" instance=ExtResource("1_axi3y")]
+layout_mode = 2
+size_flags_vertical = 3

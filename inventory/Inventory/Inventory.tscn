@@ -1,0 +1,84 @@
+[gd_scene load_steps=3 format=3 uid="uid://brfbvq4a0o8t4"]
+
+[ext_resource type="PackedScene" uid="uid://c3whyqh3e5eeb" path="res://Inventory/Slots/slot.tscn" id="1_u6bbq"]
+[ext_resource type="Resource" uid="uid://boncrvaaeobw" path="res://Items/Test.tres" id="2_xjbm4"]
+
+[node name="Inventory" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -8.0
+offset_top = -2.0
+offset_right = 63.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 5
+
+[node name="Slot" parent="CanvasLayer/GridContainer" instance=ExtResource("1_u6bbq")]
+layout_mode = 2
+item = ExtResource("2_xjbm4")
+amount = 5
+
+[node name="Slot2" parent="CanvasLayer/GridContainer" instance=ExtResource("1_u6bbq")]
+layout_mode = 2
+
+[node name="Slot3" parent="CanvasLayer/GridContainer" instance=ExtResource("1_u6bbq")]
+layout_mode = 2
+
+[node name="Slot4" parent="CanvasLayer/GridContainer" instance=ExtResource("1_u6bbq")]
+layout_mode = 2
+
+[node name="Slot5" parent="CanvasLayer/GridContainer" instance=ExtResource("1_u6bbq")]
+layout_mode = 2
+
+[node name="Slot6" parent="CanvasLayer/GridContainer" instance=ExtResource("1_u6bbq")]
+layout_mode = 2
+
+[node name="Slot7" parent="CanvasLayer/GridContainer" instance=ExtResource("1_u6bbq")]
+layout_mode = 2
+
+[node name="Slot8" parent="CanvasLayer/GridContainer" instance=ExtResource("1_u6bbq")]
+layout_mode = 2
+
+[node name="Slot9" parent="CanvasLayer/GridContainer" instance=ExtResource("1_u6bbq")]
+layout_mode = 2
+
+[node name="Slot10" parent="CanvasLayer/GridContainer" instance=ExtResource("1_u6bbq")]
+layout_mode = 2
+
+[node name="Slot11" parent="CanvasLayer/GridContainer" instance=ExtResource("1_u6bbq")]
+layout_mode = 2
+
+[node name="Slot12" parent="CanvasLayer/GridContainer" instance=ExtResource("1_u6bbq")]
+layout_mode = 2
+
+[node name="Slot13" parent="CanvasLayer/GridContainer" instance=ExtResource("1_u6bbq")]
+layout_mode = 2
+
+[node name="Slot14" parent="CanvasLayer/GridContainer" instance=ExtResource("1_u6bbq")]
+layout_mode = 2
+
+[node name="Slot15" parent="CanvasLayer/GridContainer" instance=ExtResource("1_u6bbq")]
+layout_mode = 2
+
+[node name="Slot16" parent="CanvasLayer/GridContainer" instance=ExtResource("1_u6bbq")]
+layout_mode = 2
+
+[node name="Slot17" parent="CanvasLayer/GridContainer" instance=ExtResource("1_u6bbq")]
+layout_mode = 2
