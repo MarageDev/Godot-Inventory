@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://cmhbgirr8rgx4"]
+
+[ext_resource type="Texture2D" uid="uid://dukroc2a7wcgj" path="res://g2.svg" id="1_y7xpu"]
+[ext_resource type="Script" uid="uid://dvi6avitlmes2" path="res://Item/ItemResource.gd" id="2_osnnu"]
+
+[resource]
+script = ExtResource("2_osnnu")
+title = "Test2"
+icon = ExtResource("1_y7xpu")
+description = "null"
+is_stackable = true
+amount = 2
+max_stack_amount = 10
+metadata/_custom_type_script = "uid://dvi6avitlmes2"

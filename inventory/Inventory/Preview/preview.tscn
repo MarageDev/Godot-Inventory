@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://c3whyqh3e5eeb"]
+[gd_scene load_steps=3 format=3 uid="uid://bpv6k2jd4hvgj"]
 
-[ext_resource type="Script" uid="uid://dclkk6x2t6v1i" path="res://Inventory/Slots/slot.gd" id="1_rlca5"]
+[ext_resource type="Script" uid="uid://2wxy34f0h8g4" path="res://Inventory/Preview/preview.gd" id="1_elgae"]
 
 [sub_resource type="SystemFont" id="SystemFont_3k2av"]
 font_names = PackedStringArray("Arial")
@@ -13,7 +13,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource("1_rlca5")
+script = ExtResource("1_elgae")
 
 [node name="Panel" type="Panel" parent="."]
 custom_minimum_size = Vector2(20, 20)
