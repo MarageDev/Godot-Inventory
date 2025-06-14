@@ -9,6 +9,6 @@ title = "Test"
 icon = ExtResource("1_y2cbo")
 description = "null"
 is_stackable = false
-amount = 5
+amount = 1
 max_stack_amount = -1
 metadata/_custom_type_script = "uid://dvi6avitlmes2"

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://b5nmoo4wcqs78"]
+
+[ext_resource type="Texture2D" uid="uid://b3ccfx5ttvswl" path="res://ChatGPT Image 14 juin 2025, 00_21_48.png" id="1_21idf"]
+[ext_resource type="Script" uid="uid://dvi6avitlmes2" path="res://Item/ItemResource.gd" id="2_0iuo6"]
+
+[resource]
+script = ExtResource("2_0iuo6")
+title = "Test2"
+icon = ExtResource("1_21idf")
+description = "null"
+is_stackable = false
+amount = 2
+max_stack_amount = -1
+metadata/_custom_type_script = "uid://dvi6avitlmes2"
