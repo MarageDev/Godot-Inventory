@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://brfbvq4a0o8t4"]
+[gd_scene load_steps=2 format=3 uid="uid://d2ibxm1ltqj87"]
 
 [ext_resource type="Script" uid="uid://udsrfbella2n" path="res://Inventory/inventory.gd" id="1_u6bbq"]
 
@@ -10,44 +10,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_u6bbq")
-col_number = 5
-row_number = 5
-slot_node_path = "uid://c3whyqh3e5eeb"
 
 [node name="GridContainer" type="GridContainer" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -124.5
-offset_top = -92.5
-offset_right = 179.5
-offset_bottom = 150.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/h_separation = 1
-theme_override_constants/v_separation = 1
-columns = 5
-
-[node name="Button" type="Button" parent="."]
-layout_mode = 0
-offset_left = 19.0
-offset_top = 19.0
-offset_right = 98.0
-offset_bottom = 50.0
-text = "Add Random Item"
-
-[node name="Button2" type="Button" parent="."]
-layout_mode = 0
-offset_left = 19.0
-offset_top = 64.0
-offset_right = 167.0
-offset_bottom = 95.0
-text = "Auto Arrange Items"
-
-[connection signal="pressed" from="Button" to="." method="_on_add_item_button_pressed"]
-[connection signal="pressed" from="Button2" to="." method="_on_auto_arrange_items_button_pressed"]
