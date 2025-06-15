@@ -3,6 +3,10 @@ class_name SlotNode
 
 signal item_dropped(target_slot: SlotNode, item: ItemResource, amount: int)
 
+# General parameters to adjust to the needs
+var is_static_tooltip:bool = true
+var tooltip_delay_time:float = 0.1
+
 # Static drag state (shared for all SlotNodes)
 static var drag_active: bool = false
 static var drag_item: ItemResource = null
@@ -18,6 +22,14 @@ static var split_item: ItemResource = null
 static var split_preview: Control = null
 static var ctrl_held: bool = false
 
+# Tooltip
+const TOOLTIP = preload("res://Inventory/Tooltip/tooltip.tscn")
+var tooltip_instance: Control = null
+var tooltip_timer: Timer = null
+var tooltip_pending: bool = false
+var tooltip_offset:Vector2 = Vector2(10.,10.)
+
+
 # Instance variables
 var item: ItemResource = null:
 	set(value):
@@ -26,13 +38,11 @@ var item: ItemResource = null:
 			$Panel/Amount.text = ""
 			$Panel/Icon.texture = null
 
-			tooltip_text = ""
 		else:
 			$Panel/Icon.texture = value.icon
 			amount = value.amount
 			$Panel/Amount.text = "" if not value.is_stackable else str(value.amount)
 
-			tooltip_text = item.title+"\n"+item.description
 
 var amount: int = 0:
 	set(value):
@@ -52,6 +62,12 @@ func _process(_delta):
 		split_preview.global_position = get_viewport().get_mouse_position() - split_preview.size / 2
 	if drag_preview:
 		drag_preview.global_position = get_viewport().get_mouse_position() - drag_preview.size / 2
+
+	# Move tooltip with mouse if active
+	if tooltip_instance and not is_static_tooltip:
+		var mouse_pos = get_viewport().get_mouse_position()
+		tooltip_instance.global_position = mouse_pos + tooltip_offset
+
 
 func _unhandled_key_input(e):
 	if e.keycode == KEY_CTRL:
@@ -197,3 +213,48 @@ static func _find_slots_recursive(node: Node, slots: Array) -> void:
 		slots.append(node)
 	for child in node.get_children():
 		_find_slots_recursive(child, slots)
+
+
+func _ready():
+	# Add a timer for tooltip delay
+	tooltip_timer = Timer.new()
+	tooltip_timer.wait_time = tooltip_delay_time
+	tooltip_timer.one_shot = true
+	tooltip_timer.connect("timeout", Callable(self, "_on_tooltip_timer_timeout"))
+	add_child(tooltip_timer)
+
+
+
+func _on_mouse_entered() -> void:
+	if item and not tooltip_instance and not tooltip_pending:
+		tooltip_pending = true
+		tooltip_timer.start()
+
+
+func _on_mouse_exited() -> void:
+	_hide_tooltip()
+
+func _on_tooltip_timer_timeout():
+	if tooltip_pending and item:
+		_show_tooltip()
+	tooltip_pending = false
+
+func _show_tooltip():
+	_hide_tooltip()
+
+	tooltip_instance = TOOLTIP.instantiate()
+
+	tooltip_instance._update_tooltip(item.title,item.description,"aaaa")
+
+	# Add to root so it overlays everything
+	get_tree().root.add_child(tooltip_instance)
+	var mouse_pos = get_viewport().get_mouse_position()
+	tooltip_instance.global_position = mouse_pos + tooltip_offset
+
+func _hide_tooltip():
+	tooltip_pending = false
+	if tooltip_timer and tooltip_timer.is_stopped() == false:
+		tooltip_timer.stop()
+	if tooltip_instance:
+		tooltip_instance.queue_free()
+		tooltip_instance = null

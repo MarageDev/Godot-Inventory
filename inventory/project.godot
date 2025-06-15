@@ -15,6 +15,10 @@ run/main_scene="uid://brfbvq4a0o8t4"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[gui]
+
+timers/tooltip_delay_sec=0.2
+
 [input]
 
 lmb={
