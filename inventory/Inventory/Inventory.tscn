@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://d2ibxm1ltqj87"]
 
-[ext_resource type="Script" uid="uid://udsrfbella2n" path="res://Inventory/inventory.gd" id="1_u6bbq"]
+[ext_resource type="Script" uid="uid://qyecvofihee3" path="res://Inventory/inventory.gd" id="1_u6bbq"]
 
 [node name="Inventory" type="Control"]
 layout_mode = 3
@@ -13,8 +13,10 @@ script = ExtResource("1_u6bbq")
 
 [node name="GridContainer" type="GridContainer" parent="."]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://boncrvaaeobw"]
+
+[ext_resource type="Texture2D" uid="uid://by32bf2o45uoo" path="res://icon.svg" id="1_ftn7t"]
+[ext_resource type="Script" uid="uid://dvi6avitlmes2" path="res://Item/ItemResource.gd" id="2_pqwfg"]
+
+[resource]
+script = ExtResource("2_pqwfg")
+title = "Classic Godot"
+icon = ExtResource("1_ftn7t")
+description = "The classic Godot logo. Max Stack : 5"
+is_stackable = true
+amount = 1
+max_stack_amount = 5
+metadata/_custom_type_script = "uid://dvi6avitlmes2"

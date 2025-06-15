@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://cmhbgirr8rgx4"]
+
+[ext_resource type="Texture2D" uid="uid://dukroc2a7wcgj" path="res://g2.svg" id="1_nda1g"]
+[ext_resource type="Script" uid="uid://dvi6avitlmes2" path="res://Item/ItemResource.gd" id="2_xbhct"]
+
+[resource]
+script = ExtResource("2_xbhct")
+title = "Red/Pink Godot"
+icon = ExtResource("1_nda1g")
+description = "Red/Pink logo. Spawns with 2. Max Stack : 10"
+is_stackable = true
+amount = 2
+max_stack_amount = 10
+metadata/_custom_type_script = "uid://dvi6avitlmes2"

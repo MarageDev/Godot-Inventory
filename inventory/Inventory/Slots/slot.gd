@@ -1,22 +1,42 @@
 extends Control
 class_name SlotNode
 
-var item:ItemResource = null:
+signal item_dropped(target_slot: SlotNode, item: ItemResource, amount: int)
+
+# Static drag state (shared for all SlotNodes)
+static var drag_active: bool = false
+static var drag_item: ItemResource = null
+static var drag_amount: int = 0
+static var drag_source: SlotNode = null
+static var drag_preview: Control = null
+
+# Static split state
+static var split_mode: bool = false
+static var split_source: SlotNode = null
+static var split_amount: int = 0
+static var split_item: ItemResource = null
+static var split_preview: Control = null
+static var ctrl_held: bool = false
+
+# Instance variables
+var item: ItemResource = null:
 	set(value):
 		item = value
 		if value == null:
 			$Panel/Amount.text = ""
 			$Panel/Icon.texture = null
+
+			tooltip_text = ""
 		else:
 			$Panel/Icon.texture = value.icon
 			amount = value.amount
-			# Hide amount if not stackable
 			$Panel/Amount.text = "" if not value.is_stackable else str(value.amount)
 
-var amount:int = 0:
+			tooltip_text = item.title+"\n"+item.description
+
+var amount: int = 0:
 	set(value):
 		amount = value
-		# Only show amount if stackable and > 0
 		if item and item.is_stackable and value > 0:
 			$Panel/Amount.text = str(value)
 		else:
@@ -24,31 +44,21 @@ var amount:int = 0:
 		if value <= 0:
 			item = null
 
-static var split_mode = false
-static var split_source = null
-static var split_amount = 0
-static var split_item = null
-static var split_preview = null
-static var ctrl_held = false
+var drag_start: Vector2 = Vector2.ZERO
+var is_dragged: bool = false
 
-var is_dragged = false
-var drag_preview = null
-var drag_item = null
-var drag_amount = 0
-var drag_start = Vector2.ZERO
-
-func _process(delta):
+func _process(_delta):
 	if split_preview:
-		split_preview.global_position = get_viewport().get_mouse_position() - split_preview.size/2
+		split_preview.global_position = get_viewport().get_mouse_position() - split_preview.size / 2
 	if drag_preview:
-		drag_preview.global_position = get_viewport().get_mouse_position() - drag_preview.size/2
+		drag_preview.global_position = get_viewport().get_mouse_position() - drag_preview.size / 2
 
 func _unhandled_key_input(e):
 	if e.keycode == KEY_CTRL:
 		ctrl_held = e.pressed
 
 func _gui_input(e):
-	# Only allow split if item is stackable
+	# Splitting stacks
 	if not split_mode and e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT and e.pressed and ctrl_held and item and item.is_stackable and amount > 1:
 		split_mode = true
 		split_source = self
@@ -70,41 +80,55 @@ func _gui_input(e):
 		split_source.amount -= split_amount
 		_clear_split()
 		return
+
+	# Dragging
 	if not split_mode:
 		if e is InputEventMouseButton:
 			if e.button_index == MOUSE_BUTTON_LEFT and e.pressed and item:
 				drag_start = e.position
 				is_dragged = false
 			elif e.button_index == MOUSE_BUTTON_LEFT and not e.pressed and is_dragged:
-				_try_drop()
+				_try_drop_global()
 				_end_drag()
 			elif e.button_index == MOUSE_BUTTON_RIGHT and e.pressed and amount > 0:
 				amount -= 1
 				if split_mode and self == split_source and split_amount > amount:
 					split_amount = max(1, amount)
 					_show_preview(split_item, split_amount, true)
-		elif e is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and item and not is_dragged and (e.position-drag_start).length() > 10:
+		elif e is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and item and not is_dragged and (e.position - drag_start).length() > 10:
 			is_dragged = true
-			drag_item = item
-			drag_amount = amount
-			item = null
-			amount = 0
-			_show_preview(drag_item, drag_amount, false)
+			_start_drag()
 
-func _try_drop():
-	var m = get_viewport().get_mouse_position()
-	for s in get_parent().get_children():
-		if s is SlotNode and s.get_global_rect().has_point(m):
-			if s == self:
-				item = drag_item
-				amount = drag_amount
-			else:
-				s._drop_item(self, drag_item, drag_amount)
-			return
-	item = drag_item
-	amount = drag_amount
+func _start_drag():
+	drag_active = true
+	drag_item = item
+	drag_amount = amount
+	drag_source = self
+	item = null
+	amount = 0
+	_show_preview(drag_item, drag_amount, false)
 
-func _drop_item(src, it, amt):
+func _try_drop_global():
+	var mouse_pos = get_viewport().get_mouse_position()
+	var found_slot: SlotNode = null
+	for slot in _get_all_slots():
+		if slot.get_global_rect().has_point(mouse_pos):
+			found_slot = slot
+			break
+	if found_slot:
+		if found_slot == self:
+			# Dropping on self, just restore
+			self.item = drag_item
+			self.amount = drag_amount
+		else:
+			found_slot._drop_item(self, drag_item, drag_amount)
+			found_slot.emit_signal("item_dropped", found_slot, drag_item, drag_amount)
+	else:
+		# Optionally: implement dropping outside to "destroy" or "drop" item
+		self.item = drag_item
+		self.amount = drag_amount
+
+func _drop_item(src: SlotNode, it: ItemResource, amt: int):
 	if item and it and item.title == it.title and item.is_stackable and it.is_stackable:
 		var max_stack = item.max_stack_amount
 		var combined = amount + amt
@@ -113,7 +137,6 @@ func _drop_item(src, it, amt):
 			amount = max_stack
 			src.item = it
 			src.amount = excess
-			#print(excess)
 		else:
 			amount = combined
 			src.item = null
@@ -126,23 +149,27 @@ func _drop_item(src, it, amt):
 		src.item = t
 		src.amount = n
 
-
-
-func _show_preview(it, amt, is_split):
+func _show_preview(it: ItemResource, amt: int, is_split: bool):
 	_clear_preview()
 	var p = preload("res://Inventory/Preview/preview.tscn").instantiate()
 	p.item = it
 	p.amount = amt
 	p.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	p.modulate = Color(1,1,1,0.7)
+	p.modulate = Color(1, 1, 1, 0.7)
 	get_tree().root.add_child(p)
-	p.global_position = get_viewport().get_mouse_position() - p.size/2
-	if is_split: split_preview = p
-	else: drag_preview = p
+	p.global_position = get_viewport().get_mouse_position() - p.size / 2
+	if is_split:
+		split_preview = p
+	else:
+		drag_preview = p
 
 func _clear_preview():
-	if drag_preview: drag_preview.queue_free(); drag_preview = null
-	if split_preview: split_preview.queue_free(); split_preview = null
+	if drag_preview:
+		drag_preview.queue_free()
+		drag_preview = null
+	if split_preview:
+		split_preview.queue_free()
+		split_preview = null
 
 func _clear_split():
 	_clear_preview()
@@ -152,7 +179,21 @@ func _clear_split():
 	split_item = null
 
 func _end_drag():
+	drag_active = false
 	is_dragged = false
 	_clear_preview()
 	drag_item = null
 	drag_amount = 0
+	drag_source = null
+
+func _get_all_slots() -> Array:
+	var slots = []
+	var root = get_tree().root
+	_find_slots_recursive(root, slots)
+	return slots
+
+static func _find_slots_recursive(node: Node, slots: Array) -> void:
+	if node is SlotNode:
+		slots.append(node)
+	for child in node.get_children():
+		_find_slots_recursive(child, slots)

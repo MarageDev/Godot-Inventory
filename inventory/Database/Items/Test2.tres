@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://cvitl6yu6xnfw"]
+
+[ext_resource type="Texture2D" uid="uid://tb5rtlxdk1kj" path="res://rect1.svg" id="1_ehrki"]
+[ext_resource type="Script" uid="uid://dvi6avitlmes2" path="res://Item/ItemResource.gd" id="2_2sewg"]
+
+[resource]
+script = ExtResource("2_2sewg")
+title = "Green Godot"
+icon = ExtResource("1_ehrki")
+description = "Green logo. Not stackable"
+is_stackable = false
+amount = 1
+max_stack_amount = -1
+metadata/_custom_type_script = "uid://dvi6avitlmes2"
