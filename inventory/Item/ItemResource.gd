@@ -8,3 +8,5 @@ class_name ItemResource
 @export var is_stackable:bool = false
 @export var amount:int = -1
 @export var max_stack_amount:int = -1
+
+@export var stats: Array[StatsResource] = []

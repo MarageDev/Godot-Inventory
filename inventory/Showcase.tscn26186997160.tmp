@@ -1,0 +1,189 @@
+[gd_scene load_steps=4 format=3 uid="uid://brfbvq4a0o8t4"]
+
+[ext_resource type="Script" uid="uid://udsrfbella2n" path="res://showcase.gd" id="1_agrwd"]
+[ext_resource type="PackedScene" uid="uid://d2ibxm1ltqj87" path="res://Inventory/Inventory.tscn" id="2_fa1o0"]
+[ext_resource type="StyleBox" uid="uid://dnhvpxanhcpl3" path="res://Theme/PanelStyle.tres" id="3_dbdb2"]
+
+[node name="Inventory" type="Control" node_paths=PackedStringArray("inventory_main", "inventory_secondary")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_agrwd")
+inventory_main = NodePath("Panel/Inventory")
+inventory_secondary = NodePath("Panel2/Inventory")
+
+[node name="Label" type="Label" parent="."]
+self_modulate = Color(1, 1, 1, 0.498039)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Simple Inventory System - Showcase"
+horizontal_alignment = 1
+
+[node name="Panel" type="Panel" parent="."]
+self_modulate = Color(0.75, 1, 0, 1)
+custom_minimum_size = Vector2(350, 350)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 101.0
+offset_top = -175.0
+offset_right = 451.0
+offset_bottom = 175.0
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("3_dbdb2")
+
+[node name="Inventory" parent="Panel" instance=ExtResource("2_fa1o0")]
+layout_mode = 1
+
+[node name="Label" type="Label" parent="Panel"]
+self_modulate = Color(1, 1, 1, 0.498039)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 13
+text = "Main"
+horizontal_alignment = 1
+
+[node name="Panel2" type="Panel" parent="."]
+self_modulate = Color(1, 0.533333, 0, 1)
+custom_minimum_size = Vector2(350, 100)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 152.0
+offset_top = -175.0
+offset_right = 502.0
+offset_bottom = -75.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("3_dbdb2")
+
+[node name="Inventory" parent="Panel2" instance=ExtResource("2_fa1o0")]
+layout_mode = 1
+row_number = 1
+
+[node name="Label" type="Label" parent="Panel2"]
+self_modulate = Color(1, 1, 1, 0.498039)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 13
+text = "Secondary"
+horizontal_alignment = 1
+
+[node name="Panel3" type="Panel" parent="."]
+self_modulate = Color(0.75, 1, 0, 1)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 19.0
+offset_top = -128.0
+offset_right = 265.0
+offset_bottom = -20.0
+grow_vertical = 0
+theme_override_styles/panel = ExtResource("3_dbdb2")
+
+[node name="Line2D" type="Line2D" parent="Panel3"]
+z_index = -10
+position = Vector2(728, 149)
+points = PackedVector2Array(-644, -172, -726, -147)
+width = 4.0
+default_color = Color(0.75, 1, 0, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+antialiased = true
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel3/MarginContainer"]
+layout_mode = 2
+
+[node name="add_random_item_button_g" type="Button" parent="Panel3/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Add Random Item"
+
+[node name="auto_arrange_items_button_g" type="Button" parent="Panel3/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Auto Arrange Items"
+
+[node name="Panel4" type="Panel" parent="."]
+self_modulate = Color(1, 0.533333, 0, 1)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 805.0
+offset_top = -358.0
+offset_right = 1051.0
+offset_bottom = -250.0
+grow_vertical = 0
+theme_override_styles/panel = ExtResource("3_dbdb2")
+
+[node name="Line2D" type="Line2D" parent="Panel4"]
+z_index = -10
+position = Vector2(728, 149)
+points = PackedVector2Array(-457, -190, -484, -147)
+width = 4.0
+default_color = Color(1, 0.533333, 0, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+antialiased = true
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel4/MarginContainer"]
+layout_mode = 2
+
+[node name="add_random_item_button_o" type="Button" parent="Panel4/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Add Random Item"
+
+[node name="auto_arrange_items_button_o" type="Button" parent="Panel4/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Auto Arrange Items"
+
+[connection signal="pressed" from="Panel3/MarginContainer/VBoxContainer/add_random_item_button_g" to="." method="_on_add_random_item_button_g_pressed"]
+[connection signal="pressed" from="Panel3/MarginContainer/VBoxContainer/auto_arrange_items_button_g" to="." method="_on_auto_arrange_items_button_g_pressed"]
+[connection signal="pressed" from="Panel4/MarginContainer/VBoxContainer/add_random_item_button_o" to="." method="_on_add_random_item_button_o_pressed"]
+[connection signal="pressed" from="Panel4/MarginContainer/VBoxContainer/auto_arrange_items_button_o" to="." method="_on_auto_arrange_items_button_o_pressed"]

@@ -1,7 +1,14 @@
-[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://cvitl6yu6xnfw"]
+[gd_resource type="Resource" script_class="ItemResource" load_steps=5 format=3 uid="uid://cvitl6yu6xnfw"]
 
 [ext_resource type="Texture2D" uid="uid://tb5rtlxdk1kj" path="res://rect1.svg" id="1_ehrki"]
 [ext_resource type="Script" uid="uid://dvi6avitlmes2" path="res://Item/ItemResource.gd" id="2_2sewg"]
+[ext_resource type="Script" uid="uid://c3k6xxbg417x5" path="res://Item/Stats/stats.gd" id="3_2sewg"]
+
+[sub_resource type="Resource" id="Resource_td7gb"]
+script = ExtResource("3_2sewg")
+stat = 3
+value = 10.0
+metadata/_custom_type_script = "uid://c3k6xxbg417x5"
 
 [resource]
 script = ExtResource("2_2sewg")
@@ -11,4 +18,5 @@ description = "Green logo. Not stackable"
 is_stackable = false
 amount = 1
 max_stack_amount = -1
+stats = Array[ExtResource("3_2sewg")]([SubResource("Resource_td7gb")])
 metadata/_custom_type_script = "uid://dvi6avitlmes2"

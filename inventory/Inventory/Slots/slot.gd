@@ -1,7 +1,7 @@
 extends Control
 class_name SlotNode
 
-signal item_dropped(target_slot: SlotNode, item: ItemResource, amount: int)
+signal item_dropped(source_slot:SlotNode,target_slot: SlotNode, item: ItemResource, amount: int)
 
 # General parameters to adjust to the needs
 var is_static_tooltip:bool = true
@@ -14,6 +14,8 @@ static var drag_amount: int = 0
 static var drag_source: SlotNode = null
 static var drag_preview: Control = null
 
+var drag_start: Vector2 = Vector2.ZERO
+var is_dragged: bool = false
 # Static split state
 static var split_mode: bool = false
 static var split_source: SlotNode = null
@@ -54,8 +56,14 @@ var amount: int = 0:
 		if value <= 0:
 			item = null
 
-var drag_start: Vector2 = Vector2.ZERO
-var is_dragged: bool = false
+func _ready():
+	# Add a timer for tooltip delay
+	tooltip_timer = Timer.new()
+	tooltip_timer.wait_time = tooltip_delay_time
+	tooltip_timer.one_shot = true
+	tooltip_timer.connect("timeout", Callable(self, "_on_tooltip_timer_timeout"))
+	add_child(tooltip_timer)
+
 
 func _process(_delta):
 	if split_preview:
@@ -68,33 +76,32 @@ func _process(_delta):
 		var mouse_pos = get_viewport().get_mouse_position()
 		tooltip_instance.global_position = mouse_pos + tooltip_offset
 
-
 func _unhandled_key_input(e):
 	if e.keycode == KEY_CTRL:
 		ctrl_held = e.pressed
 
+
+func _unhandled_input(event):
+	if split_mode and event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+			if not _check_if_above_slot():
+
+				split_source.amount -= split_amount
+
+				emit_signal("item_dropped", self, null, split_item, split_amount)
+				_clear_split()
+
 func _gui_input(e):
-	# Splitting stacks
-	if not split_mode and e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT and e.pressed and ctrl_held and item and item.is_stackable and amount > 1:
-		split_mode = true
-		split_source = self
-		split_amount = 1
-		split_item = item.duplicate()
-		split_item.amount = split_amount
-		_show_preview(split_item, split_amount, true)
-		return
-	if split_mode and ctrl_held and e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT and e.pressed and self == split_source and split_amount < split_source.amount:
-		split_amount += 1
-		_show_preview(split_item, split_amount, true)
-		return
-	if split_mode and not ctrl_held and e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT and e.pressed and self != split_source:
-		if item and item.title == split_item.title:
-			amount += split_amount
-		else:
-			item = split_item.duplicate()
-			amount = split_amount
-		split_source.amount -= split_amount
-		_clear_split()
+	# Handle split drop outside any slot (left mouse release)
+	if split_mode and e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT and not e.pressed:
+		# Check if mouse is not over any slot
+		if not _check_if_above_slot():
+			emit_signal("item_dropped", self, null, split_item, split_amount)
+			_clear_split()
+			return
+
+	# Handle split logic
+	if e is InputEventMouseButton and _try_split_global(e):
 		return
 
 	# Dragging
@@ -114,6 +121,46 @@ func _gui_input(e):
 		elif e is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and item and not is_dragged and (e.position - drag_start).length() > 10:
 			is_dragged = true
 			_start_drag()
+
+
+func _try_split_global(e: InputEventMouseButton) -> bool:
+	# Early exit if not a left click
+	if e.button_index != MOUSE_BUTTON_LEFT or not e.pressed:
+		return false
+
+	# Not in split mode: check if we should enter it
+	if not split_mode and ctrl_held and item and item.is_stackable and amount > 1:
+		split_mode = true
+		split_source = self
+		split_amount = 1
+		split_item = item.duplicate()
+		split_item.amount = split_amount
+		_show_preview(split_item, split_amount, true)
+		return true
+
+	# In split mode: check if it's possible to increase split amount
+	if split_mode and ctrl_held and self == split_source and split_amount < split_source.amount:
+		split_amount += 1
+		_show_preview(split_item, split_amount, true)
+		return true
+
+	# In split mode: check if it's possible to finalize the split (drop onto another slot)
+	if split_mode and not ctrl_held and self != split_source:
+		if item and item.title == split_item.title: # Slot of the same type
+			amount += split_amount
+		elif item == null: # Slot is empty
+			item = split_item.duplicate()
+			amount = split_amount
+		else :  # Don't do anything
+			return false
+
+		self.emit_signal("item_dropped", self, self, split_item, split_amount)
+		split_source.amount -= split_amount
+		_clear_split()
+		return true
+
+	return false
+
 
 func _start_drag():
 	drag_active = true
@@ -138,11 +185,23 @@ func _try_drop_global():
 			self.amount = drag_amount
 		else:
 			found_slot._drop_item(self, drag_item, drag_amount)
-			found_slot.emit_signal("item_dropped", found_slot, drag_item, drag_amount)
+			found_slot.emit_signal("item_dropped", self, found_slot, drag_item, drag_amount)
 	else:
 		# Optionally: implement dropping outside to "destroy" or "drop" item
 		self.item = drag_item
 		self.amount = drag_amount
+		self.emit_signal("item_dropped", self, null, drag_item, drag_amount)
+
+func _check_if_above_slot():
+	var mouse_pos = get_viewport().get_mouse_position()
+	var found_slot: SlotNode = null
+	for slot in _get_all_slots():
+		if slot.get_global_rect().has_point(mouse_pos):
+			found_slot = slot
+			break
+	return found_slot != null
+
+
 
 func _drop_item(src: SlotNode, it: ItemResource, amt: int):
 	if item and it and item.title == it.title and item.is_stackable and it.is_stackable:
@@ -214,16 +273,7 @@ static func _find_slots_recursive(node: Node, slots: Array) -> void:
 	for child in node.get_children():
 		_find_slots_recursive(child, slots)
 
-
-func _ready():
-	# Add a timer for tooltip delay
-	tooltip_timer = Timer.new()
-	tooltip_timer.wait_time = tooltip_delay_time
-	tooltip_timer.one_shot = true
-	tooltip_timer.connect("timeout", Callable(self, "_on_tooltip_timer_timeout"))
-	add_child(tooltip_timer)
-
-
+# Tooltip
 
 func _on_mouse_entered() -> void:
 	if item and not tooltip_instance and not tooltip_pending:
@@ -244,7 +294,7 @@ func _show_tooltip():
 
 	tooltip_instance = TOOLTIP.instantiate()
 
-	tooltip_instance._update_tooltip(item.title,item.description,"aaaa")
+	tooltip_instance._update_tooltip(item.title,item.description,item.stats)
 
 	# Add to root so it overlays everything
 	get_tree().root.add_child(tooltip_instance)
