@@ -21,18 +21,55 @@ func _on_item_dropped(source_slot, slot, dragged_item:ItemResource, dragged_amou
 func _set_up_inventory():
 	grid_container.columns = col_number
 	for i in range(col_number * row_number):
-		var temp_slot:SlotNode = load(slot_node_path).instantiate()
+		var temp_slot: SlotNode = load(slot_node_path).instantiate()
 		grid_container.add_child(temp_slot)
 		slots_nodes.append(temp_slot)
 
-func add_item(item:ItemResource):
-	var first_empty_slot:SlotNode = null
-	for i:SlotNode in slots_nodes:
-		if i.item == null:
-			first_empty_slot = i
-			break
-	if first_empty_slot:
-		first_empty_slot.item = item
+# Returns the amount of items actually added (can be less than item.amount)
+func add_item(item: ItemResource, use_smart_add: bool = false) -> int:
+	if not use_smart_add:
+		for slot in slots_nodes:
+			if slot.item == null:
+				slot.item = item.duplicate()
+				slot.amount = item.amount
+				return item.amount
+		return 0
+
+	if item.is_stackable:
+		var to_add = item.amount
+		var added = 0
+		# 1. Stack with existing stacks
+		for slot in slots_nodes:
+			if slot.item and slot.item.title == item.title and slot.item.is_stackable:
+				var can_stack = slot.item.max_stack_amount - slot.amount
+				if can_stack > 0:
+					var add_now = min(can_stack, to_add)
+					slot.amount += add_now
+					to_add -= add_now
+					added += add_now
+					if to_add <= 0:
+						return added
+		# 2. Add to empty slots
+		for slot in slots_nodes:
+			if slot.item == null:
+				var add_now = min(item.max_stack_amount, to_add)
+				slot.item = item.duplicate()
+				slot.amount = add_now
+				to_add -= add_now
+				added += add_now
+				if to_add <= 0:
+					return added
+		return added # Could not add all, return how much was added
+	else:
+		# Not stackable: add to first empty slot only
+		for slot in slots_nodes:
+			if slot.item == null:
+				slot.item = item.duplicate()
+				slot.amount = 1
+				return 1
+		return 0
+
+
 
 func get_slots() -> Array[SlotNode]:
 	return slots_nodes
@@ -132,3 +169,6 @@ func _clear_all_slots() -> void:
 	for slot in slots_nodes:
 		slot.item = null
 		slot.amount = 0
+
+func has_remaining_slots()->bool:
+	return not slots_nodes.all(func(slot): return slot.item != null)

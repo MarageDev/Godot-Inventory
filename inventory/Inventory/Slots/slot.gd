@@ -1,7 +1,8 @@
 extends Control
 class_name SlotNode
 
-signal item_dropped(source_slot:SlotNode,target_slot: SlotNode, item: ItemResource, amount: int)
+signal item_dropped(source_slot:SlotNode, target_slot:SlotNode, item:ItemResource, amount:int)
+signal item_clicked_on(source_slot:SlotNode, item:ItemResource, amount:int)
 
 # General parameters to adjust to the needs
 var is_static_tooltip:bool = true
@@ -31,7 +32,6 @@ var tooltip_timer: Timer = null
 var tooltip_pending: bool = false
 var tooltip_offset:Vector2 = Vector2(10.,10.)
 
-
 # Instance variables
 var item: ItemResource = null:
 	set(value):
@@ -39,12 +39,10 @@ var item: ItemResource = null:
 		if value == null:
 			$Panel/Amount.text = ""
 			$Panel/Icon.texture = null
-
 		else:
 			$Panel/Icon.texture = value.icon
 			amount = value.amount
 			$Panel/Amount.text = "" if not value.is_stackable else str(value.amount)
-
 
 var amount: int = 0:
 	set(value):
@@ -64,7 +62,6 @@ func _ready():
 	tooltip_timer.connect("timeout", Callable(self, "_on_tooltip_timer_timeout"))
 	add_child(tooltip_timer)
 
-
 func _process(_delta):
 	if split_preview:
 		split_preview.global_position = get_viewport().get_mouse_position() - split_preview.size / 2
@@ -80,16 +77,14 @@ func _unhandled_key_input(e):
 	if e.keycode == KEY_CTRL:
 		ctrl_held = e.pressed
 
-
 func _unhandled_input(event):
 	if split_mode and event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
 			if not _check_if_above_slot():
-
 				split_source.amount -= split_amount
-
 				emit_signal("item_dropped", self, null, split_item, split_amount)
 				_clear_split()
+
 
 func _gui_input(e):
 	# Handle split drop outside any slot (left mouse release)
@@ -108,6 +103,8 @@ func _gui_input(e):
 	if not split_mode:
 		if e is InputEventMouseButton:
 			if e.button_index == MOUSE_BUTTON_LEFT and e.pressed and item:
+				# EMIT THE SIGNAL WHEN CLICKED
+				emit_signal("item_clicked_on", self, item, amount)
 				drag_start = e.position
 				is_dragged = false
 			elif e.button_index == MOUSE_BUTTON_LEFT and not e.pressed and is_dragged:
@@ -121,7 +118,6 @@ func _gui_input(e):
 		elif e is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and item and not is_dragged and (e.position - drag_start).length() > 10:
 			is_dragged = true
 			_start_drag()
-
 
 func _try_split_global(e: InputEventMouseButton) -> bool:
 	# Early exit if not a left click
@@ -161,7 +157,6 @@ func _try_split_global(e: InputEventMouseButton) -> bool:
 
 	return false
 
-
 func _start_drag():
 	drag_active = true
 	drag_item = item
@@ -200,8 +195,6 @@ func _check_if_above_slot():
 			found_slot = slot
 			break
 	return found_slot != null
-
-
 
 func _drop_item(src: SlotNode, it: ItemResource, amt: int):
 	if item and it and item.title == it.title and item.is_stackable and it.is_stackable:
@@ -280,7 +273,6 @@ func _on_mouse_entered() -> void:
 		tooltip_pending = true
 		tooltip_timer.start()
 
-
 func _on_mouse_exited() -> void:
 	_hide_tooltip()
 
@@ -291,11 +283,8 @@ func _on_tooltip_timer_timeout():
 
 func _show_tooltip():
 	_hide_tooltip()
-
 	tooltip_instance = TOOLTIP.instantiate()
-
-	tooltip_instance._update_tooltip(item.title,item.description,item.stats)
-
+	tooltip_instance._update_tooltip(item.title, item.description, item.stats)
 	# Add to root so it overlays everything
 	get_tree().root.add_child(tooltip_instance)
 	var mouse_pos = get_viewport().get_mouse_position()
