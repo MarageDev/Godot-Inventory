@@ -12,11 +12,6 @@ var database:DatabaseResource = preload("res://Database/Showcase.tres")
 
 func _ready() -> void:
 	_set_up_inventory()
-	for slot in slots_nodes:
-		slot.connect("item_dropped",_on_item_dropped)
-
-func _on_item_dropped(source_slot, slot, dragged_item:ItemResource, dragged_amount):
-	pass #print("Item : ",dragged_item.title if dragged_item else "ERROR", " dragged on : ",slot," with amount of :", dragged_amount)
 
 func _set_up_inventory():
 	grid_container.columns = col_number

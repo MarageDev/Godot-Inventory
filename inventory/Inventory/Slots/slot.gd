@@ -62,6 +62,11 @@ func _ready():
 	tooltip_timer.connect("timeout", Callable(self, "_on_tooltip_timer_timeout"))
 	add_child(tooltip_timer)
 
+	var l:Label = Label.new()
+	l.add_theme_font_size_override("font_size",8)
+	l.text = str(self.name)
+	add_child(l)
+
 func _process(_delta):
 	if split_preview:
 		split_preview.global_position = get_viewport().get_mouse_position() - split_preview.size / 2
@@ -81,9 +86,13 @@ func _unhandled_input(event):
 	if split_mode and event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
 			if not _check_if_above_slot():
-				split_source.amount -= split_amount
-				emit_signal("item_dropped", self, null, split_item, split_amount)
+				emit_signal("item_dropped", split_source, null, split_item, split_amount)
 				_clear_split()
+	# Cancel the split no right mouse click
+	if split_mode and event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_RIGHT and not event.pressed:
+				_clear_split()
+
 
 
 func _gui_input(e):
@@ -94,6 +103,8 @@ func _gui_input(e):
 			emit_signal("item_dropped", self, null, split_item, split_amount)
 			_clear_split()
 			return
+
+
 
 	# Handle split logic
 	if e is InputEventMouseButton and _try_split_global(e):
@@ -149,8 +160,7 @@ func _try_split_global(e: InputEventMouseButton) -> bool:
 			amount = split_amount
 		else :  # Don't do anything
 			return false
-
-		self.emit_signal("item_dropped", self, self, split_item, split_amount)
+		emit_signal("item_dropped", split_source, self, split_item, split_amount)
 		split_source.amount -= split_amount
 		_clear_split()
 		return true
@@ -196,14 +206,14 @@ func _check_if_above_slot():
 			break
 	return found_slot != null
 
-func _drop_item(src: SlotNode, it: ItemResource, amt: int):
-	if item and it and item.title == it.title and item.is_stackable and it.is_stackable:
+func _drop_item(src: SlotNode, item: ItemResource, amt: int):
+	if item and item and item.title == item.title and item.is_stackable and item.is_stackable:
 		var max_stack = item.max_stack_amount
 		var combined = amount + amt
 		if combined > max_stack:
 			var excess = combined - max_stack
 			amount = max_stack
-			src.item = it
+			src.item = item
 			src.amount = excess
 		else:
 			amount = combined
@@ -212,15 +222,15 @@ func _drop_item(src: SlotNode, it: ItemResource, amt: int):
 	else:
 		var t = item
 		var n = amount
-		item = it
+		item = item
 		amount = amt
 		src.item = t
 		src.amount = n
 
-func _show_preview(it: ItemResource, amt: int, is_split: bool):
+func _show_preview(item: ItemResource, amt: int, is_split: bool):
 	_clear_preview()
 	var p = preload("res://Inventory/Preview/preview.tscn").instantiate()
-	p.item = it
+	p.item = item
 	p.amount = amt
 	p.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	p.modulate = Color(1, 1, 1, 0.7)
@@ -285,7 +295,7 @@ func _show_tooltip():
 	_hide_tooltip()
 	tooltip_instance = TOOLTIP.instantiate()
 	tooltip_instance._update_tooltip(item.title, item.description, item.stats)
-	# Add to root so it overlays everything
+	# Add to root so item overlays everything
 	get_tree().root.add_child(tooltip_instance)
 	var mouse_pos = get_viewport().get_mouse_position()
 	tooltip_instance.global_position = mouse_pos + tooltip_offset

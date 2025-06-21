@@ -11,17 +11,33 @@ func _ready() -> void:
 		for slot in inv.get_slots():
 			slot.connect("item_dropped", _on_any_item_dropped)
 			slot.connect("item_clicked_on",_on_item_clicked_on)
+func _process(delta: float) -> void:
+	queue_redraw()
+
+func _draw() -> void:
+	for inv in [inventory_main, inventory_secondary, inventory_dropped]:
+		for slot:SlotNode in inv.get_slots():
+			if slot in inventory_dropped.get_slots() :
+				draw_circle(slot.global_position + slot.size/2.,5.,Color.RED,true)
 
 func _on_any_item_dropped(source_slot: SlotNode, target_slot: SlotNode, item: ItemResource, amount: int):
-	if target_slot == null and not is_slot_in_inventory(source_slot, inventory_dropped) :
-		var dropped_item = item.duplicate()
-		dropped_item.amount = amount
-		var added = inventory_dropped.add_item(dropped_item, true) # now returns actual amount added
-		if added > 0:
-			source_slot.amount -= added
-			# If source is empty, clear item
+	if target_slot == null and not is_slot_in_inventory(source_slot, inventory_dropped):
+
+		var drop_amount = min(amount, item.max_stack_amount)
+		var item_copy = item.duplicate()
+		item_copy.amount = drop_amount
+
+		var added_count = inventory_dropped.add_item(item_copy, true)
+		source_slot.amount -= added_count
+
+		var remaining = amount - added_count
+		if remaining > 0:
+			pass
+		else:
 			if source_slot.amount <= 0:
 				source_slot.item = null
+				source_slot.amount = 0
+
 
 
 
@@ -57,6 +73,7 @@ func _on_add_random_item_button_b_pressed() -> void:
 
 
 var is_quick_inventory_switch:bool = false
+
 func _unhandled_key_input(event: InputEvent) -> void:
 	# Handle quick switch bool on SHIFT input
 	if event is InputEventKey and event.keycode == KEY_SHIFT and event.is_pressed():
@@ -65,4 +82,4 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		is_quick_inventory_switch = false
 
 func is_slot_in_inventory(slot: SlotNode, inventory: InventoryClass) -> bool:
-	return slot.get_parent().get_parent() == inventory
+	return slot in inventory.get_slots()
