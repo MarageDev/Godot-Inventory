@@ -17,6 +17,9 @@ script = ExtResource("1_agrwd")
 inventory_main = NodePath("Panel/Inventory")
 inventory_secondary = NodePath("Panel2/Inventory")
 inventory_dropped = NodePath("Panel5/InventoryGround")
+col_number = null
+row_number = null
+slot_scene_path = null
 
 [node name="Label" type="Label" parent="."]
 self_modulate = Color(1, 1, 1, 0.498039)

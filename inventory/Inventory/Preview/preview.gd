@@ -15,6 +15,7 @@ var amount:int = 0:
 	set(value):
 		amount = value
 		$Panel/Amount.text = str(value)
+
 		if item.is_stackable == false :
 			$Panel/Amount.text = ""
 		if amount <= 0 :
