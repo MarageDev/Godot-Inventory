@@ -2,6 +2,8 @@ extends Resource
 class_name StackItemResourceClass
 
 @export var items: Array[ItemResource] = []
+#@export var item:I
+
 
 func get_amount() -> int:
 	return items.size()

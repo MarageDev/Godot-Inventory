@@ -27,6 +27,7 @@ script = ExtResource("2_pqwfg")
 title = "Classic Godot"
 icon = ExtResource("1_ftn7t")
 description = "The classic Godot logo. Max Stack : 5"
+is_unique = false
 is_stackable = true
 amount = 1
 max_stack_amount = 5

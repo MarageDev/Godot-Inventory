@@ -21,6 +21,7 @@ script = ExtResource("2_xbhct")
 title = "Red/Pink Godot"
 icon = ExtResource("1_nda1g")
 description = "Red/Pink logo. Spawns with 2. Max Stack : 10"
+is_unique = false
 is_stackable = true
 amount = 2
 max_stack_amount = 10

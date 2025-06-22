@@ -33,25 +33,34 @@ func _draw() -> void:
 func _on_any_item_dropped(source_slot: SlotNode, target_slot: SlotNode, stack: StackItemResourceClass, amount: int):
 	if target_slot == null and not inventory_dropped.is_slot_in_inventory(source_slot):
 		if stack and not stack.is_empty():
-			var accepted = inventory_dropped.try_accept_external_stack(stack)
-			if accepted == stack.items.size():
-				# All items moved, clear source
-				source_slot.stack = StackItemResourceClass.new()
-			else:
-				# Only some items moved, remove those from source
-				for i in range(accepted):
+			# Create a duplicate stack to pass to the dropped inventory
+			var stack_copy := StackItemResourceClass.new()
+			for item in stack.items:
+				stack_copy.items.append(item.duplicate())
+
+			# Try to add the stack copy to the dropped inventory
+			var accepted := inventory_dropped.try_accept_external_stack(stack_copy)
+
+			# Remove the accepted number of items from the source slot
+			# (removes from the front, preserving order)
+			for i in range(accepted):
+				if source_slot.stack.items.size() > 0:
 					source_slot.stack.items.pop_front()
 			source_slot._update_visuals()
 		return
 
 
+
 func _on_item_clicked_on(source_slot: SlotNode, stack: StackItemResourceClass, amount: int):
-	var quick_switch_inventory_target:InventoryClass = inventory_main
-	if is_quick_inventory_switch:
-		if source_slot not in quick_switch_inventory_target.get_slots() and stack and not stack.is_empty():
-			var initial_inventory:InventoryClass = source_slot.get_parent_inventory(inventories)
-			for i in stack.items:
-				initial_inventory.move_item(i,quick_switch_inventory_target)
+	if is_quick_inventory_switch and stack and not stack.is_empty():
+		var target_inventory := inventory_main
+		if source_slot not in target_inventory.get_slots():
+			var stack_copy := StackItemResourceClass.new()
+			for item in stack.items:
+				stack_copy.items.append(item.duplicate())
+			if target_inventory.try_accept_external_stack(stack_copy) == stack.items.size():
+				source_slot.stack = StackItemResourceClass.new()
+				source_slot._update_visuals()
 
 func _on_add_random_item_button_g_pressed() -> void:
 	inventory_main.add_item(select_random_item_from_DB(database))
