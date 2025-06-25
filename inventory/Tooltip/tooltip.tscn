@@ -1,0 +1,76 @@
+[gd_scene load_steps=6 format=3 uid="uid://ca1s6tqtfpy34"]
+
+[ext_resource type="FontVariation" uid="uid://tvkivvewbktx" path="res://Styles/Font.tres" id="1_pi0nk"]
+[ext_resource type="Script" path="res://Tooltip/tooltip.gd" id="1_ufg5x"]
+[ext_resource type="StyleBox" uid="uid://c2ocmgi07ga8e" path="res://Styles/tooltip_style_box_flat.tres" id="2_ypa7k"]
+
+[sub_resource type="SystemFont" id="SystemFont_pi0nk"]
+font_names = PackedStringArray("Consolas")
+subpixel_positioning = 0
+
+[sub_resource type="FontVariation" id="FontVariation_ufg5x"]
+base_font = SubResource("SystemFont_pi0nk")
+
+[node name="Control" type="Control"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 250.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource("1_ufg5x")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+offset_right = 280.0
+offset_bottom = 66.0
+mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Panel" type="Panel" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("2_ypa7k")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="MarginContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("FontVariation_ufg5x")
+text = "Title"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Description" type="Label" parent="MarginContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.47451)
+theme_override_fonts/font = ExtResource("1_pi0nk")
+theme_override_font_sizes/font_size = 12
+text = "Description aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+autowrap_mode = 3
+
+[node name="Stats" type="Label" parent="MarginContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.639216)
+theme_override_fonts/font = ExtResource("1_pi0nk")
+theme_override_font_sizes/font_size = 14
+text = "Stats
+a
+a
+a
+a
+a"

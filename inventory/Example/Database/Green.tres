@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="Item" load_steps=6 format=3 uid="uid://bru5lrrfh7bto"]
+
+[ext_resource type="Texture2D" uid="uid://bagjo5yumx7d3" path="res://Green.svg" id="1_hnb6q"]
+[ext_resource type="Script" uid="uid://chb7138vmv1yh" path="res://Items/item.gd" id="2_bnsxt"]
+[ext_resource type="Script" uid="uid://cbed3euk3jlc1" path="res://Items/Stats/stats.gd" id="3_bnsxt"]
+
+[sub_resource type="Resource" id="Resource_rehin"]
+script = ExtResource("3_bnsxt")
+stat = 3
+value = 10.0
+metadata/_custom_type_script = "uid://cbed3euk3jlc1"
+
+[sub_resource type="Resource" id="Resource_ss52n"]
+script = ExtResource("3_bnsxt")
+stat = 1
+value = 1.0
+metadata/_custom_type_script = "uid://cbed3euk3jlc1"
+
+[resource]
+script = ExtResource("2_bnsxt")
+title = "Green"
+icon = ExtResource("1_hnb6q")
+description = "Green godot logo, for healing stuff"
+stats = Array[Object]([SubResource("Resource_rehin"), SubResource("Resource_ss52n")])
+metadata/_custom_type_script = "uid://chb7138vmv1yh"

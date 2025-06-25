@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="Item" load_steps=5 format=3 uid="uid://cwnd8y2pc2da8"]
+
+[ext_resource type="Texture2D" uid="uid://b83ey0jvllfb8" path="res://Purple.svg" id="1_wfiwb"]
+[ext_resource type="Script" uid="uid://chb7138vmv1yh" path="res://Items/item.gd" id="2_s6peq"]
+[ext_resource type="Script" uid="uid://cbed3euk3jlc1" path="res://Items/Stats/stats.gd" id="3_s6peq"]
+
+[sub_resource type="Resource" id="Resource_eui1n"]
+script = ExtResource("3_s6peq")
+stat = 1
+value = 50.0
+metadata/_custom_type_script = "uid://cbed3euk3jlc1"
+
+[resource]
+script = ExtResource("2_s6peq")
+title = "Purple"
+icon = ExtResource("1_wfiwb")
+description = "Purple godot logo, for random items"
+max_stack_amount = 50
+stats = Array[Object]([SubResource("Resource_eui1n")])
+metadata/_custom_type_script = "uid://chb7138vmv1yh"

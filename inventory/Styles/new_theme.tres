@@ -1,0 +1,6 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://bhem6k7xyxrwr"]
+
+[ext_resource type="FontVariation" uid="uid://tvkivvewbktx" path="res://Styles/Font.tres" id="1_ccvh1"]
+
+[resource]
+Label/fonts/font = ExtResource("1_ccvh1")

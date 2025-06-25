@@ -1,0 +1,9 @@
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://tvkivvewbktx"]
+
+[sub_resource type="SystemFont" id="SystemFont_l584t"]
+font_names = PackedStringArray("Consolas")
+font_italic = true
+
+[resource]
+base_font = SubResource("SystemFont_l584t")
+spacing_top = 3

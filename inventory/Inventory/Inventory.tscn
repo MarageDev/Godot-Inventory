@@ -1,22 +1,44 @@
-[gd_scene load_steps=2 format=3 uid="uid://d2ibxm1ltqj87"]
+[gd_scene load_steps=2 format=3 uid="uid://bmfac7d2ifdju"]
 
-[ext_resource type="Script" uid="uid://qyecvofihee3" path="res://Inventory/inventory.gd" id="1_u6bbq"]
+[ext_resource type="Script" uid="uid://u6jrmuv7sjai" path="res://Inventory/inventory.gd" id="1_u6bbq"]
 
-[node name="Inventory" type="Control"]
+[node name="Inventory" type="Control" node_paths=PackedStringArray("slots_container", "background_panel") groups=["inventories"]]
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 script = ExtResource("1_u6bbq")
+slots_container = NodePath("MarginContainer/SlotsContainer")
+background_panel = NodePath("Panel")
 
-[node name="GridContainer" type="GridContainer" parent="."]
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_top = 324.0
+offset_right = 1102.0
+offset_bottom = 324.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
+anchors_preset = 14
 anchor_top = 0.5
-anchor_right = 0.5
+anchor_right = 1.0
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 10
+
+[node name="SlotsContainer" type="HFlowContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+alignment = 1
+last_wrap_alignment = 1
+
+[connection signal="resized" from="." to="." method="_on_resized"]
+[connection signal="sort_children" from="MarginContainer/SlotsContainer" to="." method="_on_slots_container_sort_children"]

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Database" load_steps=7 format=3 uid="uid://mmb03ejrnkjq"]
+
+[ext_resource type="Script" path="res://Items/item.gd" id="1_7yu5v"]
+[ext_resource type="Resource" uid="uid://igect5d6dub8" path="res://Example/Database/Blue.tres" id="2_nwtt5"]
+[ext_resource type="Resource" uid="uid://bru5lrrfh7bto" path="res://Example/Database/Green.tres" id="3_mbxgh"]
+[ext_resource type="Resource" uid="uid://cwnd8y2pc2da8" path="res://Example/Database/Purple.tres" id="4_wcoy1"]
+[ext_resource type="Resource" uid="uid://dlp4gqsfa4kix" path="res://Example/Database/Red.tres" id="5_qyls6"]
+[ext_resource type="Script" path="res://Database/database.gd" id="6_u226k"]
+
+[resource]
+script = ExtResource("6_u226k")
+database = Array[ExtResource("1_7yu5v")]([ExtResource("2_nwtt5"), ExtResource("3_mbxgh"), ExtResource("4_wcoy1"), ExtResource("5_qyls6")])
+metadata/_custom_type_script = "uid://carc8ukuaf1g1"

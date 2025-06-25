@@ -11,26 +11,16 @@ config_version=5
 [application]
 
 config/name="Inventory"
-run/main_scene="uid://brfbvq4a0o8t4"
-config/features=PackedStringArray("4.4", "GL Compatibility")
-config/icon="res://icon.svg"
+run/main_scene="res://Example/Example.tscn"
+config/features=PackedStringArray("4.5", "GL Compatibility")
 
-[gui]
+[dotnet]
 
-timers/tooltip_delay_sec=0.2
+project/assembly_name="Inventory"
 
-[input]
+[global_group]
 
-lmb={
-"deadzone": 0.2,
-"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":1,"position":Vector2(374, 21),"global_position":Vector2(383, 69),"factor":1.0,"button_index":1,"canceled":false,"pressed":true,"double_click":false,"script":null)
-]
-}
-rmb={
-"deadzone": 0.2,
-"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":2,"position":Vector2(410, 13),"global_position":Vector2(419, 61),"factor":1.0,"button_index":2,"canceled":false,"pressed":true,"double_click":false,"script":null)
-]
-}
+inventories=""
 
 [rendering]
 

@@ -1,0 +1,50 @@
+[gd_scene load_steps=4 format=3 uid="uid://w0om8u8begx7"]
+
+[ext_resource type="Script" uid="uid://by2jwh15qwlj4" path="res://Slots/slot.gd" id="1_28npu"]
+[ext_resource type="Theme" uid="uid://bhem6k7xyxrwr" path="res://Styles/new_theme.tres" id="1_ke3uh"]
+[ext_resource type="StyleBox" uid="uid://datwdeewmrmvb" path="res://Styles/slot_style_box_flat.tres" id="2_bi0ql"]
+
+[node name="Slot" type="Control"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 60.0
+offset_bottom = 60.0
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_ke3uh")
+script = ExtResource("1_28npu")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 60.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = ExtResource("2_bi0ql")
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="Icon" type="TextureRect" parent="Panel/MarginContainer"]
+layout_mode = 2
+expand_mode = 1
+
+[node name="Amount" type="Label" parent="Panel/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 14
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

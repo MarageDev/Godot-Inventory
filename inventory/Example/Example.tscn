@@ -1,0 +1,186 @@
+[gd_scene load_steps=6 format=3 uid="uid://67m8dv5yag17"]
+
+[ext_resource type="Theme" uid="uid://bhem6k7xyxrwr" path="res://Styles/new_theme.tres" id="1_gceka"]
+[ext_resource type="Script" uid="uid://ckyifxhnitvnn" path="res://Example/example.gd" id="1_jinva"]
+[ext_resource type="PackedScene" uid="uid://bmfac7d2ifdju" path="res://Inventory/Inventory.tscn" id="1_uxlpr"]
+[ext_resource type="StyleBox" uid="uid://dxm3piphrnngm" path="res://Styles/inventory_style_box_flat.tres" id="3_u1fk0"]
+[ext_resource type="PackedScene" uid="uid://bob4eknu3e1bw" path="res://Example/ExampleInventoryInterface.tscn" id="4_k2ydb"]
+
+[node name="Control" type="Control" node_paths=PackedStringArray("ground_inventory", "main_inventory", "second_inventory")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_gceka")
+script = ExtResource("1_jinva")
+ground_inventory = NodePath("Panel3/VBoxContainer/Ground_Inventory")
+main_inventory = NodePath("Panel/VBoxContainer/Main_Inventory")
+second_inventory = NodePath("Panel2/VBoxContainer/Second_Inventory")
+
+[node name="Label" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0.470588)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Simple Inventory System - Example"
+horizontal_alignment = 1
+
+[node name="Panel" type="Panel" parent="."]
+self_modulate = Color(0.9999998, 0.53901577, 0.18183681, 1)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 15.0
+offset_top = -240.0
+offset_right = 367.0
+offset_bottom = 98.0
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("3_u1fk0")
+
+[node name="Line2D2" type="Line2D" parent="Panel"]
+position = Vector2(-8, 157)
+points = PackedVector2Array(142, 181, 142, 189)
+width = 1.0
+default_color = Color(0.9999998, 0.53901577, 0.18183681, 1)
+
+[node name="ExampleInventoryInterface" parent="Panel" node_paths=PackedStringArray("target_inventory") instance=ExtResource("4_k2ydb")]
+modulate = Color(0.9999998, 0.53901577, 0.18183681, 1)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = 8.0
+offset_right = 259.0
+offset_bottom = 108.0
+grow_vertical = 0
+target_inventory = NodePath("../VBoxContainer/Main_Inventory")
+title = "Main Inventory"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer"]
+self_modulate = Color(0.9999998, 0.53901577, 0.18183681, 1)
+layout_mode = 2
+text = "Main Inventory"
+horizontal_alignment = 1
+
+[node name="Main_Inventory" parent="Panel/VBoxContainer" instance=ExtResource("1_uxlpr")]
+layout_mode = 2
+size_flags_vertical = 3
+number_of_slots = 20
+
+[node name="Panel2" type="Panel" parent="."]
+self_modulate = Color(0.18039216, 1, 0.76862746, 1)
+custom_minimum_size = Vector2(450, 200)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -513.0
+offset_top = 37.0
+offset_right = -25.0
+offset_bottom = 282.0
+grow_horizontal = 0
+theme_override_styles/panel = ExtResource("3_u1fk0")
+
+[node name="Line2D" type="Line2D" parent="Panel2"]
+position = Vector2(366, 253)
+points = PackedVector2Array(0, -9, 0, 0)
+width = 1.0
+default_color = Color(0.18039216, 1, 0.76862746, 1)
+
+[node name="ExampleInventoryInterface3" parent="Panel2" node_paths=PackedStringArray("target_inventory") instance=ExtResource("4_k2ydb")]
+modulate = Color(0.18039216, 1, 0.76862746, 1)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -259.0
+offset_top = 253.0
+offset_right = 0.0
+offset_bottom = 353.0
+grow_horizontal = 0
+target_inventory = NodePath("../VBoxContainer/Second_Inventory")
+title = "Secondary Inventory"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Panel2/VBoxContainer"]
+self_modulate = Color(0.18039216, 1, 0.76862746, 1)
+layout_mode = 2
+text = "Secondary Inventory"
+horizontal_alignment = 1
+
+[node name="Second_Inventory" parent="Panel2/VBoxContainer" instance=ExtResource("1_uxlpr")]
+layout_mode = 2
+size_flags_vertical = 3
+number_of_slots = 20
+
+[node name="Panel3" type="Panel" parent="."]
+self_modulate = Color(0.6446666, 0.18, 1, 1)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -482.0
+offset_top = -219.0
+offset_right = -25.0
+offset_bottom = -11.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/panel = ExtResource("3_u1fk0")
+
+[node name="Line2D2" type="Line2D" parent="Panel3"]
+position = Vector2(-8, 157)
+points = PackedVector2Array(8, 0, 0, 0)
+width = 1.0
+default_color = Color(0.6446666, 0.18, 1, 1)
+
+[node name="ExampleInventoryInterface2" parent="Panel3" node_paths=PackedStringArray("target_inventory") instance=ExtResource("4_k2ydb")]
+modulate = Color(0.6446666, 0.18, 1, 1)
+layout_mode = 0
+offset_left = -267.0
+offset_top = 107.0
+offset_right = -8.0
+offset_bottom = 207.0
+target_inventory = NodePath("../VBoxContainer/Ground_Inventory")
+title = "Ground"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Panel3/VBoxContainer"]
+self_modulate = Color(0.6446666, 0.18, 1, 1)
+layout_mode = 2
+text = "Ground"
+horizontal_alignment = 1
+
+[node name="Ground_Inventory" parent="Panel3/VBoxContainer" instance=ExtResource("1_uxlpr")]
+layout_mode = 2
+size_flags_vertical = 3
+number_of_slots = 12
