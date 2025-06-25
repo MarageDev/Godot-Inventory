@@ -1,10 +1,20 @@
-[gd_scene load_steps=6 format=3 uid="uid://67m8dv5yag17"]
+[gd_scene load_steps=9 format=3 uid="uid://67m8dv5yag17"]
 
 [ext_resource type="Theme" uid="uid://bhem6k7xyxrwr" path="res://Styles/new_theme.tres" id="1_gceka"]
 [ext_resource type="Script" uid="uid://ckyifxhnitvnn" path="res://Example/example.gd" id="1_jinva"]
 [ext_resource type="PackedScene" uid="uid://bmfac7d2ifdju" path="res://Inventory/Inventory.tscn" id="1_uxlpr"]
+[ext_resource type="FontVariation" uid="uid://tvkivvewbktx" path="res://Styles/Font.tres" id="3_q7ba3"]
 [ext_resource type="StyleBox" uid="uid://dxm3piphrnngm" path="res://Styles/inventory_style_box_flat.tres" id="3_u1fk0"]
 [ext_resource type="PackedScene" uid="uid://bob4eknu3e1bw" path="res://Example/ExampleInventoryInterface.tscn" id="4_k2ydb"]
+
+[sub_resource type="SystemFont" id="SystemFont_3tv0a"]
+font_names = PackedStringArray("Consolas")
+font_italic = true
+
+[sub_resource type="FontVariation" id="FontVariation_7rh02"]
+base_font = SubResource("SystemFont_3tv0a")
+variation_embolden = 1.06
+spacing_top = 3
 
 [node name="Control" type="Control" node_paths=PackedStringArray("ground_inventory", "main_inventory", "second_inventory")]
 layout_mode = 3
@@ -20,14 +30,19 @@ ground_inventory = NodePath("Panel3/VBoxContainer/Ground_Inventory")
 main_inventory = NodePath("Panel/VBoxContainer/Main_Inventory")
 second_inventory = NodePath("Panel2/VBoxContainer/Second_Inventory")
 
-[node name="Label" type="Label" parent="."]
-modulate = Color(1, 1, 1, 0.470588)
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+modulate = Color(1, 1, 1, 0.5176471)
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 23.0
 grow_horizontal = 2
-text = "Simple Inventory System - Example"
+theme_override_fonts/normal_font = ExtResource("3_q7ba3")
+theme_override_fonts/bold_font = SubResource("FontVariation_7rh02")
+bbcode_enabled = true
+text = "[b]G[/b]odot [b]I[/b]nventory [b]S[/b]ystem (GIS)
+"
+fit_content = true
 horizontal_alignment = 1
 
 [node name="Panel" type="Panel" parent="."]
