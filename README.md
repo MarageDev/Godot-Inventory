@@ -15,7 +15,7 @@ for many things with inventory-like interactions by exposing most of the main ac
 # Features
 - ***Drag*** and ***drop***
 - ***Stack splitting*** : CTRL + Left click x times to select x items to move
-- ***Quick switch*** from one inventory to another : SHIFT + Left click ( not added yet )
+- ***Quick switch*** from one inventory to another : SHIFT + Left click
 - ***Auto sorting*** ( depending on custom sorting parameters )
 - A lot of ***information exposed through signals*** for an easier integration
 - An ***example scene*** to showcase a common inventory layout with mechanics
