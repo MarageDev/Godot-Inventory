@@ -2,6 +2,7 @@ extends Control
 class_name Inventory
 
 signal on_item_moved(from_slot: Slot, to_slot: Slot, moved_content: SlotContent)
+signal on_slot_clicked(slot:Slot)
 
 @export var number_of_slots: int = 5
 @export var slots_container: HFlowContainer
@@ -16,8 +17,8 @@ static var is_split_mode: bool = false
 static var is_split_mode_key_held: bool = false
 
 # PREVIEW
-var preview_node: Control = null
-var preview_content: SlotContent = null
+static var preview_node: Control = null
+static var preview_content: SlotContent = null
 
 @export var background_panel: Panel
 @onready var margin_container: MarginContainer = $MarginContainer
@@ -52,7 +53,7 @@ func _connect_signals_local():
 		if i:
 			i.connect("_on_drag_started", on_slot_drag_started)
 			i.connect("_on_drag_ended", on_slot_drag_ended)
-			i.connect("_on_clicked", on_slot_clicked)
+			i.connect("_on_clicked", _on_slot_clicked)
 
 func _set_up_inventory():
 	add_to_group("inventories", true)
@@ -80,12 +81,14 @@ func _unhandled_input(event: InputEvent) -> void:
 				emit_signal("on_item_moved", split_from_slot, null, moved)
 
 func on_slot_drag_started(from_slot: Slot):
-	if from_slot and not from_slot.slot_content.is_empty():
+	if from_slot and not from_slot.slot_content.is_empty() and not is_split_mode:
 		preview_content = from_slot.slot_content
 		display_preview()
 
 func on_slot_drag_ended(from_slot: Slot):
 	if from_slot.slot_content.is_empty() : return
+	if is_split_mode : return
+
 	clear_preview()
 	var to_slot: Slot = _find_slot_under_mouse_global()
 	var moved_content: SlotContent = from_slot.slot_content if from_slot else null
@@ -108,8 +111,9 @@ func on_slot_drag_ended(from_slot: Slot):
 	else:
 		emit_signal("on_item_moved", from_slot, null, moved_content)
 
-func on_slot_clicked(slot: Slot):
+func _on_slot_clicked(slot: Slot):
 	_handle_split_mode(slot)
+	emit_signal("on_slot_clicked",slot)
 
 func _handle_split_mode(slot: Slot):
 	if not is_split_mode:
@@ -207,16 +211,16 @@ func can_stack_with(to_slot: Slot, moved_content: SlotContent) -> bool:
 func auto_sort():
 	var all_items: Array[Item] = []
 	for slot in slots:
-		all_items.append_array(slot.slot_content.content)
-		slot.slot_content.set_content([] as Array[Item])
-	var item_occurrences = get_items_occurences(all_items)
-	item_occurrences.sort_custom(func(a, b): return a[0].title < b[0].title)
-	for entry in item_occurrences:
-		var item = entry[0]
-		var count = entry[1]
-		add_item_amount_stacked(item.duplicate(), count)
+		all_items.append_array(slot.slot_content.remove_all())
 
-func get_items_occurences(items: Array[Item]) -> Array:
+	var item_occurrences = get_item_occurences_full(all_items)
+	var sorted_keys = item_occurrences.keys()
+	sorted_keys.sort() # Sorts alphabetically
+
+	for k in sorted_keys:
+		add_items_as_stacks(item_occurrences[k])
+
+func get_items_occurences_numbers(items: Array[Item]) -> Array:
 	var counts := {}
 	for item in items:
 		if not item:
@@ -227,6 +231,18 @@ func get_items_occurences(items: Array[Item]) -> Array:
 		else:
 			counts[key] = [item.duplicate(), 1]
 	return counts.values()
+
+func get_item_occurences_full(items: Array[Item]):
+	var counts := {}
+	for item in items:
+		if not item:
+			continue
+		var key = item.title
+		if counts.has(key):
+			counts[key].append(item)
+		else:
+			counts[key] = [item] as Array[Item]
+	return counts
 
 func add_item_amount_stacked(item: Item, amount: int):
 	if not item:
@@ -248,6 +264,30 @@ func add_item_amount_stacked(item: Item, amount: int):
 			if not slot:
 				break
 			slot.add_item(item.duplicate())
+			slot = get_first_empty_slot()
+
+func add_items_as_stacks(items: Array[Item]):
+	if not items or items == []:
+		push_error("Tried to stack null item")
+		return
+
+	var initial_size: int = items.size()
+	var rest: int = items.size()
+	var slot: Slot = get_first_empty_slot()
+	if not slot:
+		push_error("No empty slot available for stacking")
+		return
+	if items[0].max_stack_amount > 0:
+		while rest > 0 and slot:
+			slot.add_item(items[initial_size - rest].duplicate())
+			if slot.slot_content.get_amount() == slot.slot_content.get_first_item().max_stack_amount:
+				slot = get_first_empty_slot()
+			rest -= 1
+	else:
+		for x in range(rest):
+			if not slot:
+				break
+			slot.add_item(items[initial_size - rest].duplicate())
 			slot = get_first_empty_slot()
 
 func display_preview():
@@ -278,3 +318,9 @@ func get_children_bounding_box(parent: Control) -> Rect2:
 		if child is Control:
 			rects.append(Rect2(child.global_position, child.size))
 	return rects.reduce(func(a, b): return a.merge(b))
+
+func get_inventory_for_slot(slot: Slot) -> Inventory:
+	for inventory in get_tree().get_nodes_in_group("inventories"):
+		if inventory is Inventory and slot in inventory.slots:
+			return inventory
+	return null

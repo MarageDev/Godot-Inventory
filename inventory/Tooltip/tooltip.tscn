@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://ca1s6tqtfpy34"]
 
 [ext_resource type="FontVariation" uid="uid://tvkivvewbktx" path="res://Styles/Font.tres" id="1_pi0nk"]
-[ext_resource type="Script" path="res://Tooltip/tooltip.gd" id="1_ufg5x"]
+[ext_resource type="Script" uid="uid://x2mm3wa2jpws" path="res://Tooltip/tooltip.gd" id="1_ufg5x"]
 [ext_resource type="StyleBox" uid="uid://c2ocmgi07ga8e" path="res://Styles/tooltip_style_box_flat.tres" id="2_ypa7k"]
 
 [sub_resource type="SystemFont" id="SystemFont_pi0nk"]

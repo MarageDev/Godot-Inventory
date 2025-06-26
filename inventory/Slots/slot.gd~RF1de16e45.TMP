@@ -45,6 +45,7 @@ func _handle_drag(event:InputEvent):
 func _handle_click(event:InputEvent):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		emit_signal("_on_clicked",self)
+
 func _update_visuals():
 	$Panel/MarginContainer/Icon.texture = slot_content.get_first_item().icon if not slot_content.is_empty() else null
 	$Panel/MarginContainer/Amount.text = str(slot_content.get_amount()) if slot_content.get_amount() > 1 else ""
