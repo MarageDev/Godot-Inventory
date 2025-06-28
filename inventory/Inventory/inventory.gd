@@ -5,7 +5,7 @@ signal on_item_moved(from_slot: Slot, to_slot: Slot, moved_content: SlotContent)
 signal on_slot_clicked(slot:Slot)
 
 @export var number_of_slots: int = 5
-@export var slots_container: HFlowContainer
+@export var use_background_panel:bool = true
 
 var slots: Array[Slot] = []
 
@@ -20,19 +20,22 @@ static var is_split_mode_key_held: bool = false
 static var preview_node: Control = null
 static var preview_content: SlotContent = null
 
-@export var background_panel: Panel
+@onready var background_panel: Panel = $Panel
 @onready var margin_container: MarginContainer = $MarginContainer
-
+@onready var slots_container: HFlowContainer = $MarginContainer/SlotsContainer
 
 func _ready() -> void:
 	_set_up_inventory()
-	_connect_signals_local()
+	_connect_signals()
+	if not use_background_panel :
+		background_panel.visible = false
 
 var bounding_box:Rect2
 var background_panel_margin:float = 10
 
 func _process(delta: float) -> void:
-	_update_background_panel()
+	if use_background_panel :
+		_update_background_panel()
 
 func _update_background_panel():
 	# Get the bounding box of all children in slots_container
@@ -48,12 +51,13 @@ func _update_background_panel():
 	margin_container.add_theme_constant_override("margin_right", background_panel_margin)
 	margin_container.add_theme_constant_override("margin_bottom", background_panel_margin)
 
-func _connect_signals_local():
+func _connect_signals():
 	for i: Slot in slots:
 		if i:
 			i.connect("_on_drag_started", on_slot_drag_started)
 			i.connect("_on_drag_ended", on_slot_drag_ended)
 			i.connect("_on_clicked", _on_slot_clicked)
+			i.connect("_on_double_clicked", on_slot_double_clicked)
 
 func _set_up_inventory():
 	add_to_group("inventories", true)
@@ -114,6 +118,10 @@ func on_slot_drag_ended(from_slot: Slot):
 func _on_slot_clicked(slot: Slot):
 	_handle_split_mode(slot)
 	emit_signal("on_slot_clicked",slot)
+
+func on_slot_double_clicked(slot:Slot):
+	if not slot.slot_content.is_empty() :
+		print("use item",slot.slot_content.get_first_item().title)
 
 func _handle_split_mode(slot: Slot):
 	if not is_split_mode:

@@ -8,7 +8,7 @@ var inventories:Array[Inventory] = []
 
 var is_shift_pressed: bool = false
 func _ready() -> void:
-	inventories = [ground_inventory,main_inventory,second_inventory]
+	inventories = get_all_inventories()
 
 	for inventory:Inventory in inventories:
 		inventory.connect("on_item_moved",on_item_moved)
@@ -55,3 +55,9 @@ func add_items_to_inventories():
 	for i in range(10):
 		var item = InventoryInstance.select_random_item_from_db(db)
 		second_inventory.add_item(item.randomize_stats())
+
+func get_all_inventories()->Array[Inventory]:
+	var invs:Array[Inventory]
+	for inventory in get_tree().get_nodes_in_group("inventories"):
+		invs.append(inventory)
+	return invs

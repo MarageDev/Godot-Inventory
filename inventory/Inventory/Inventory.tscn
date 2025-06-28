@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://u6jrmuv7sjai" path="res://Inventory/inventory.gd" id="1_u6bbq"]
 
-[node name="Inventory" type="Control" node_paths=PackedStringArray("slots_container", "background_panel") groups=["inventories"]]
+[node name="Inventory" type="Control" groups=["inventories"]]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 3
 anchors_preset = 15
@@ -12,8 +12,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_u6bbq")
-slots_container = NodePath("MarginContainer/SlotsContainer")
-background_panel = NodePath("Panel")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 0
@@ -31,7 +29,6 @@ anchor_right = 1.0
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 10
 
 [node name="SlotsContainer" type="HFlowContainer" parent="MarginContainer"]
 layout_mode = 2

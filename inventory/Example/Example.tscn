@@ -27,7 +27,7 @@ mouse_filter = 2
 theme = ExtResource("1_gceka")
 script = ExtResource("1_jinva")
 ground_inventory = NodePath("Panel3/VBoxContainer/Ground_Inventory")
-main_inventory = NodePath("Panel/VBoxContainer/Main_Inventory")
+main_inventory = NodePath("Panel1/VBoxContainer/Main_Inventory")
 second_inventory = NodePath("Panel2/VBoxContainer/Second_Inventory")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
@@ -45,7 +45,7 @@ text = "[b]G[/b]odot [b]I[/b]nventory [b]S[/b]ystem (GIS)
 fit_content = true
 horizontal_alignment = 1
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel1" type="Panel" parent="."]
 self_modulate = Color(0.9999998, 0.53901577, 0.18183681, 1)
 layout_mode = 1
 anchors_preset = 4
@@ -58,13 +58,13 @@ offset_bottom = 98.0
 grow_vertical = 2
 theme_override_styles/panel = ExtResource("3_u1fk0")
 
-[node name="Line2D2" type="Line2D" parent="Panel"]
+[node name="Line2D2" type="Line2D" parent="Panel1"]
 position = Vector2(-8, 157)
 points = PackedVector2Array(142, 181, 142, 189)
 width = 1.0
 default_color = Color(0.9999998, 0.53901577, 0.18183681, 1)
 
-[node name="ExampleInventoryInterface" parent="Panel" node_paths=PackedStringArray("target_inventory") instance=ExtResource("4_k2ydb")]
+[node name="ExampleInventoryInterface" parent="Panel1" node_paths=PackedStringArray("target_inventory") instance=ExtResource("4_k2ydb")]
 modulate = Color(0.9999998, 0.53901577, 0.18183681, 1)
 layout_mode = 1
 anchors_preset = 2
@@ -77,7 +77,7 @@ grow_vertical = 0
 target_inventory = NodePath("../VBoxContainer/Main_Inventory")
 title = "Main Inventory"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel1"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -85,16 +85,53 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="Panel/VBoxContainer"]
+[node name="Label" type="Label" parent="Panel1/VBoxContainer"]
 self_modulate = Color(0.9999998, 0.53901577, 0.18183681, 1)
 layout_mode = 2
 text = "Main Inventory"
 horizontal_alignment = 1
 
-[node name="Main_Inventory" parent="Panel/VBoxContainer" instance=ExtResource("1_uxlpr")]
+[node name="Main_Inventory" parent="Panel1/VBoxContainer" instance=ExtResource("1_uxlpr")]
 layout_mode = 2
 size_flags_vertical = 3
 number_of_slots = 20
+
+[node name="Panel4" type="Panel" parent="."]
+self_modulate = Color(0.18039216, 0.8352941, 1, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -142.0
+offset_top = -90.0
+offset_right = 12.0
+offset_bottom = 56.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("3_u1fk0")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Panel4/VBoxContainer"]
+self_modulate = Color(0.18039216, 0.8352941, 1, 1)
+layout_mode = 2
+text = "Single Inventory Slot"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="SingleSlot_Inventory" parent="Panel4/VBoxContainer" instance=ExtResource("1_uxlpr")]
+layout_mode = 2
+size_flags_vertical = 3
+number_of_slots = 1
+use_background_panel = false
 
 [node name="Panel2" type="Panel" parent="."]
 self_modulate = Color(0.18039216, 1, 0.76862746, 1)

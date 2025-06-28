@@ -4,8 +4,14 @@ class_name Slot
 signal _on_clicked	(slot:Slot)
 signal _on_drag_started	(from_slot:Slot)
 signal _on_drag_ended	(from_slot:Slot)
+signal _on_double_clicked (slot:Slot)
 
 var slot_content:SlotContent = SlotContent.new()
+
+# Drag
+var is_dragged = false
+var drag_start_position = Vector2.ZERO
+var drag_threshold:float = 10.
 
 # Tooltip
 const tooltip = preload("uid://ca1s6tqtfpy34")
@@ -13,12 +19,19 @@ var tooltip_instance: Control = null
 var tooltip_timer: Timer = null
 var tooltip_offset := Vector2(10, 10)
 var is_static_tooltip:bool = true
-var tooltip_delay_time:float = 0.4
+var tooltip_delay_time:float = 0.2
+
+# Double click detection
+var click_timer: Timer = null
+var click_count: int = 0
+const DOUBLE_CLICK_DELAY: float = 0.3
 
 func _ready() -> void:
 	slot_content.connect("slot_content_changed",_on_slot_content_changed)
 	#_debug_visuals()
 	_init_tooltip_timer()
+	_init_click_timer()
+
 func _on_slot_content_changed(slot_content_res:SlotContent):
 	_update_visuals()
 
@@ -29,13 +42,8 @@ func _gui_input(event: InputEvent) -> void:
 	_handle_drag(event)
 	_handle_click(event)
 
-
-var is_dragged = false
-var drag_start_position = Vector2.ZERO
-var drag_threshold:float = 1.
-
 func _handle_drag(event:InputEvent):
-	if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not is_dragged and (event.position - drag_start_position).length() > drag_threshold:
+	if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not is_dragged and (event.global_position - drag_start_position).length() > drag_threshold:
 		emit_signal("_on_drag_started",self)
 		is_dragged = true
 
@@ -43,8 +51,11 @@ func _handle_drag(event:InputEvent):
 		emit_signal("_on_drag_ended",self)
 		is_dragged = false
 func _handle_click(event:InputEvent):
+
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
+		drag_start_position = event.global_position
 		emit_signal("_on_clicked",self)
+	_handle_double_click(event)
 func _update_visuals():
 	$Panel/MarginContainer/Icon.texture = slot_content.get_first_item().icon if not slot_content.is_empty() else null
 	$Panel/MarginContainer/Amount.text = str(slot_content.get_amount()) if slot_content.get_amount() > 1 else ""
@@ -66,7 +77,7 @@ func set_content(new_content:Array[Item]):
 func merge_content(content_to_merge:Array[Item]):
 	slot_content.merge_content(content_to_merge)
 
-
+# Tooltip
 func _on_mouse_entered() -> void:
 	modulate = Color(0.8, 0.8, 0.8, 1.0)
 	if not slot_content.is_empty() and not tooltip_instance:
@@ -106,3 +117,27 @@ func _init_tooltip_timer():
 	tooltip_timer.one_shot = true
 	tooltip_timer.connect("timeout", Callable(self, "_on_tooltip_timer_timeout"))
 	add_child(tooltip_timer)
+
+# Double click
+func _init_click_timer():
+	click_timer = Timer.new()
+	click_timer.wait_time = DOUBLE_CLICK_DELAY
+	click_timer.one_shot = true
+	click_timer.connect("timeout", Callable(self, "_reset_click_count"))
+	add_child(click_timer)
+
+func _reset_click_count():
+	click_count = 0
+
+func _handle_double_click(event:InputEvent):
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
+		click_count += 1
+
+		if click_count == 1:
+			# Start timer for double click detection
+			click_timer.start()
+		elif click_count == 2:
+			# Double click detected
+			emit_signal("_on_double_clicked", self)
+			click_count = 0
+			click_timer.stop()
