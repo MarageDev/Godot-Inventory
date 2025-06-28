@@ -22,7 +22,6 @@ func is_empty():
 
 func add_item(item:Item)->Item:
 	var item_to_add:Item = item
-	#item_to_add.randomize_stats() # WARNING
 	content.append(item_to_add)
 	emit_signal("slot_content_changed",self)
 	return item_to_add

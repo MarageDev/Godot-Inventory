@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://u6jrmuv7sjai" path="res://Inventory/inventory.gd" id="1_u6bbq"]
 
 [node name="Inventory" type="Control" groups=["inventories"]]
-custom_minimum_size = Vector2(100, 100)
+custom_minimum_size = Vector2(70, 70)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -32,8 +32,8 @@ grow_vertical = 2
 
 [node name="SlotsContainer" type="HFlowContainer" parent="MarginContainer"]
 layout_mode = 2
-theme_override_constants/h_separation = 0
-theme_override_constants/v_separation = 0
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
 alignment = 1
 last_wrap_alignment = 1
 

@@ -33,7 +33,8 @@ func on_inventory_slot_clicked(slot:Slot):
 			target_inventory = main_inventory
 		elif slot in ground_inventory.slots :
 			target_inventory = main_inventory
-
+		else :
+			target_inventory = main_inventory
 		var target_slot:Slot = target_inventory.get_first_empty_slot()
 		if target_slot and not slot.slot_content.is_empty() :
 			target_slot.set_content(slot.slot_content.remove_all())
