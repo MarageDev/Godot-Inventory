@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bmfac7d2ifdju"]
 
-[ext_resource type="Script" uid="uid://u6jrmuv7sjai" path="res://Inventory/inventory.gd" id="1_u6bbq"]
+[ext_resource type="Script" uid="uid://u6jrmuv7sjai" path="res://addons/gis/Core/Inventory/inventory.gd" id="1_u6bbq"]
 
 [node name="Inventory" type="Control" groups=["inventories"]]
 custom_minimum_size = Vector2(70, 70)

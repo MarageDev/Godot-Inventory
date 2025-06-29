@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dgab8rtdyhl7j"]
 
-[ext_resource type="Script" path="res://Preview/preview.gd" id="1_kedqh"]
+[ext_resource type="Script" uid="uid://qetaap2aldag" path="res://addons/gis/Core/Preview/preview.gd" id="1_kedqh"]
 
 [node name="Preview" type="Control"]
 modulate = Color(1, 1, 1, 0.498039)

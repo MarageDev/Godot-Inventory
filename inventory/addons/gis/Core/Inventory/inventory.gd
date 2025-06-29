@@ -66,7 +66,7 @@ func _set_up_inventory():
 		return
 
 	for i in range(number_of_slots):
-		var temp_slot: Slot = preload("res://Slots/Slot.tscn").instantiate()
+		var temp_slot: Slot = preload("res://addons/gis/Core/Slots/Slot.tscn").instantiate()
 		if temp_slot:
 			slots_container.add_child(temp_slot)
 			slots.append(temp_slot)
@@ -300,7 +300,7 @@ func add_items_as_stacks(items: Array[Item]):
 
 func display_preview():
 	clear_preview()
-	var preview_scene = preload("res://Preview/preview.tscn")
+	var preview_scene = preload("res://addons/gis/Core/Preview/preview.tscn")
 	if not preview_scene:
 		push_error("Preview scene not found!")
 		return

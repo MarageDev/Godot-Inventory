@@ -11,12 +11,16 @@ config_version=5
 [application]
 
 config/name="Inventory"
-run/main_scene="res://Example/Example.tscn"
+run/main_scene="uid://67m8dv5yag17"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 
 [dotnet]
 
 project/assembly_name="Inventory"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gis/plugin.cfg")
 
 [global_group]
 

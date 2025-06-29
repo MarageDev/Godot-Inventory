@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://bob4eknu3e1bw"]
 
-[ext_resource type="Theme" uid="uid://bhem6k7xyxrwr" path="res://Styles/new_theme.tres" id="1_f0ypf"]
-[ext_resource type="Script" uid="uid://s0minqmgwoml" path="res://Example/example_inventory_interface.gd" id="1_taclt"]
-[ext_resource type="StyleBox" uid="uid://dxm3piphrnngm" path="res://Styles/inventory_style_box_flat.tres" id="2_lg01p"]
-[ext_resource type="FontVariation" uid="uid://tvkivvewbktx" path="res://Styles/Font.tres" id="4_egkax"]
+[ext_resource type="Theme" uid="uid://bhem6k7xyxrwr" path="res://addons/gis/Example/Styles/new_theme.tres" id="1_f0ypf"]
+[ext_resource type="Script" uid="uid://s0minqmgwoml" path="res://addons/gis/Example/example_inventory_interface.gd" id="1_taclt"]
+[ext_resource type="StyleBox" uid="uid://dxm3piphrnngm" path="res://addons/gis/Example/Styles/inventory_style_box_flat.tres" id="2_lg01p"]
+[ext_resource type="FontVariation" uid="uid://tvkivvewbktx" path="res://addons/gis/Example/Styles/Font.tres" id="4_egkax"]
 
 [node name="ExampleInventoryInterface" type="Control"]
 custom_minimum_size = Vector2(100, 100)

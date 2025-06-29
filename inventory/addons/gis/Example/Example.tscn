@@ -1,11 +1,11 @@
 [gd_scene load_steps=9 format=3 uid="uid://67m8dv5yag17"]
 
-[ext_resource type="Theme" uid="uid://bhem6k7xyxrwr" path="res://Styles/new_theme.tres" id="1_gceka"]
-[ext_resource type="Script" uid="uid://ckyifxhnitvnn" path="res://Example/example.gd" id="1_jinva"]
-[ext_resource type="PackedScene" uid="uid://bmfac7d2ifdju" path="res://Inventory/Inventory.tscn" id="1_uxlpr"]
-[ext_resource type="FontVariation" uid="uid://tvkivvewbktx" path="res://Styles/Font.tres" id="3_q7ba3"]
-[ext_resource type="StyleBox" uid="uid://dxm3piphrnngm" path="res://Styles/inventory_style_box_flat.tres" id="3_u1fk0"]
-[ext_resource type="PackedScene" uid="uid://bob4eknu3e1bw" path="res://Example/ExampleInventoryInterface.tscn" id="4_k2ydb"]
+[ext_resource type="Theme" uid="uid://bhem6k7xyxrwr" path="res://addons/gis/Example/Styles/new_theme.tres" id="1_gceka"]
+[ext_resource type="Script" uid="uid://ckyifxhnitvnn" path="res://addons/gis/Example/example.gd" id="1_jinva"]
+[ext_resource type="PackedScene" uid="uid://bmfac7d2ifdju" path="res://addons/gis/Core/Inventory/Inventory.tscn" id="1_uxlpr"]
+[ext_resource type="FontVariation" uid="uid://tvkivvewbktx" path="res://addons/gis/Example/Styles/Font.tres" id="3_q7ba3"]
+[ext_resource type="StyleBox" uid="uid://dxm3piphrnngm" path="res://addons/gis/Example/Styles/inventory_style_box_flat.tres" id="3_u1fk0"]
+[ext_resource type="PackedScene" uid="uid://bob4eknu3e1bw" path="res://addons/gis/Example/ExampleInventoryInterface.tscn" id="4_k2ydb"]
 
 [sub_resource type="SystemFont" id="SystemFont_3tv0a"]
 font_names = PackedStringArray("Consolas")

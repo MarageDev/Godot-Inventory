@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="Item" load_steps=6 format=3 uid="uid://dlp4gqsfa4kix"]
 
-[ext_resource type="Texture2D" uid="uid://cbbmg5xnk27f5" path="res://Red.svg" id="1_b340v"]
-[ext_resource type="Script" uid="uid://chb7138vmv1yh" path="res://Items/item.gd" id="2_ls3ka"]
-[ext_resource type="Script" uid="uid://cbed3euk3jlc1" path="res://Items/Stats/stats.gd" id="3_ls3ka"]
+[ext_resource type="Texture2D" uid="uid://cbbmg5xnk27f5" path="res://addons/gis/Example/Textures/Red.svg" id="1_b340v"]
+[ext_resource type="Script" uid="uid://chb7138vmv1yh" path="res://addons/gis/Core/Items/item.gd" id="2_ls3ka"]
+[ext_resource type="Script" uid="uid://cbed3euk3jlc1" path="res://addons/gis/Core/Items/Stats/stats.gd" id="3_ls3ka"]
 
 [sub_resource type="Resource" id="Resource_w7vrp"]
 script = ExtResource("3_ls3ka")

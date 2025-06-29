@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://w0om8u8begx7"]
 
-[ext_resource type="Script" uid="uid://by2jwh15qwlj4" path="res://Slots/slot.gd" id="1_28npu"]
-[ext_resource type="Theme" uid="uid://bhem6k7xyxrwr" path="res://Styles/new_theme.tres" id="1_ke3uh"]
-[ext_resource type="StyleBox" uid="uid://datwdeewmrmvb" path="res://Styles/slot_style_box_flat.tres" id="2_bi0ql"]
+[ext_resource type="Script" uid="uid://by2jwh15qwlj4" path="res://addons/gis/Core/Slots/slot.gd" id="1_28npu"]
+[ext_resource type="Theme" uid="uid://bhem6k7xyxrwr" path="res://addons/gis/Example/Styles/new_theme.tres" id="1_ke3uh"]
+[ext_resource type="StyleBox" uid="uid://datwdeewmrmvb" path="res://addons/gis/Example/Styles/slot_style_box_flat.tres" id="2_bi0ql"]
 
 [node name="Slot" type="Control"]
 custom_minimum_size = Vector2(60, 60)

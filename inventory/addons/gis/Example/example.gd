@@ -43,7 +43,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.keycode == KEY_SHIFT:
 		is_shift_pressed = event.is_pressed()
 
-var db = preload("res://Example/Database/example_database.tres")
+var db = preload("uid://mmb03ejrnkjq")
 func add_items_to_inventories():
 	var InventoryInstance:Inventory = Inventory.new()
 	# Main

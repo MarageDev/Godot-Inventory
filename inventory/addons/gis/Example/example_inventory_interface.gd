@@ -6,7 +6,7 @@ extends Control
 func _ready() -> void:
 	label.text = title
 
-var db = preload("res://Example/Database/example_database.tres")
+var db = preload("uid://mmb03ejrnkjq")
 func _on_add_item_button_pressed() -> void:
 	var InventoryInstance:Inventory = Inventory.new()
 	var item = InventoryInstance.select_random_item_from_db(db)
