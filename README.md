@@ -4,7 +4,7 @@
   <h3>
     An attempt at creating a simple and modular inventory system in Godot 
   </h3>
-  <h6>WIP</h6>
+  <h6>Pronunced like "geez"</h6>
 </div>
 <br>
 
